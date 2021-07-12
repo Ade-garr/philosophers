@@ -6,16 +6,17 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:16:08 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/08 14:13:30 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/12 22:55:12 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "unistd.h"
-# include "stdlib.h"
-# include "stdio.h" // A SUPPRIMER
+# include <unistd.h>
+# include <stdlib.h>
+# include <pthread.h>
+# include <stdio.h> // A SUPPRIMER
 
 typedef struct s_philo
 {
@@ -24,6 +25,9 @@ typedef struct s_philo
 	int	tte;
 	int	tts;
 	int	nb_tme;
+	pthread_t	*tab_phl;
+	pthread_t	*tab_mstr;
+	pthread_mutex_t	*tab_mtx;
 }	t_philo;
 
 // FT_ATOI.C
