@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:16:08 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/12 22:55:12 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/13 14:47:31 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 # include <stdio.h> // A SUPPRIMER
 
 typedef struct s_philo
@@ -28,6 +29,11 @@ typedef struct s_philo
 	pthread_t	*tab_phl;
 	pthread_t	*tab_mstr;
 	pthread_mutex_t	*tab_mtx;
+	pthread_mutex_t	syscl;
+	struct timeval	init;
+	struct timeval	current;
+	int	setup;
+	int	death;
 }	t_philo;
 
 // FT_ATOI.C

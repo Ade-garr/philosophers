@@ -6,7 +6,7 @@
 #    By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/12 10:29:31 by user42            #+#    #+#              #
-#    Updated: 2021/07/08 15:10:37 by ade-garr         ###   ########.fr        #
+#    Updated: 2021/07/13 14:25:46 by ade-garr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ SRCS += ./srcs/ft_atoi.c
 SRCS += ./srcs/ft_calloc.c
 SRCS += ./srcs/ft_isdigit.c
 SRCS += ./srcs/main.c
+SRCS += ./srcs/start.c
 SRCS += ./srcs/utils.c
 
 OBJS	= ${SRCS:.c=.o}

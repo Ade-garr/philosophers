@@ -48,9 +48,12 @@ void	*routine(void *arg)
 int	main()
 {
 	pthread_t	th;
+    int         ret;
 
-	pthread_create(&th, NULL, routine, NULL);
-	pthread_join(th, NULL);
+    th = 0;
+	// pthread_create(&th, NULL, routine, NULL);
+	ret = pthread_join(th, NULL);
+    printf("ret = %d\n", ret);
 	pthread_detach(th);
 	usleep(2000000);
 	return (0);

@@ -6,11 +6,50 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:11:02 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/13 00:45:58 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/13 14:48:30 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	init_threads(t_philo *philo)
+{
+	int	i;
+	int	ret;
+
+	i = 0;
+	while (i < philo->nb_phl)
+	{
+		ret = pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, philo); // a voir si modif arg
+		if (ret != 0)
+		{
+			write(1, "Error : pthread_create failed\n", 30);
+			philo->setup = 2;
+			free_struct(philo);
+			return (1);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < philo->nb_phl)
+	{
+		ret = pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, philo); // a voir si modif arg
+		if (ret != 0)
+		{
+			write(1, "Error : pthread_create failed\n", 30);
+			philo->setup = 2;
+			free_struct(philo);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+void	free_struct(t_philo *philo)
+{
+	(void)philo;
+}
 
 t_philo	*init_philo(int argc, char **argv)
 {
@@ -63,6 +102,7 @@ t_philo	*init_philo(int argc, char **argv)
 		pthread_mutex_init(&philo->tab_mtx[i], NULL);
 		i++;
 	}
+	pthread_mutex_init(&philo->syscl, NULL);
 	return (philo);
 }
 
@@ -75,5 +115,10 @@ int	main(int argc, char **argv)
 	philo = init_philo(argc, argv);
 	if (philo == NULL)
 		return (1);
+	if (init_threads(philo) == 1)
+		return (1);
+	if (start_simul(philo) == 1)
+		return (1);
+	free_struct(philo); // a faire
 	return (0);
 }
