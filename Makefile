@@ -6,7 +6,7 @@
 #    By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/12 10:29:31 by user42            #+#    #+#              #
-#    Updated: 2021/07/15 04:51:04 by ade-garr         ###   ########.fr        #
+#    Updated: 2021/07/15 17:46:45 by ade-garr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ SRCS += ./srcs/ft_isdigit.c
 SRCS += ./srcs/ft_putnbr_fd.c
 SRCS += ./srcs/main.c
 SRCS += ./srcs/start.c
+SRCS += ./srcs/thrd_mstr.c
 SRCS += ./srcs/thrd_phl.c
 SRCS += ./srcs/utils.c
 

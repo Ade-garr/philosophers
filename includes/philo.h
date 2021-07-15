@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:16:08 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/15 04:48:32 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/15 17:48:20 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,15 @@ typedef struct	s_thrd
 	int	ttd;
 	int	tte;
 	int	tts;
+	int	nb_tme;
 	int	*setup;
-	int	*death;
+	int	*end;
+	int	*is_eating;
 	struct timeval	*init;
 	struct timeval	current;
 	pthread_mutex_t	*tab_mtx;
 	pthread_mutex_t	*syscl;
-	struct timeval	last;
+	struct timeval	*last;
 }				t_thrd;
 
 typedef struct s_philo
@@ -49,7 +51,7 @@ typedef struct s_philo
 	t_thrd	*tab_thrd;
 	struct timeval	init;
 	int	setup;
-	int	death;
+	int	end;
 }	t_philo;
 
 // FT_ATOI.C
@@ -71,17 +73,22 @@ void	free_struct(t_philo *philo);
 t_philo	*init_philo(int argc, char **argv);
 int		main(int argc, char **argv);
 
+//  START.C
+int		start_simul(t_philo *philo);
+
 //  THRD_PHL.C
 void	*ft_rout_phl(void *arg);
 
-//  START.C
-int		start_simul(t_philo *philo);
+//  THRD_MSTR.C
+unsigned int	ft_dif_timeval(struct timeval current, struct timeval last);
+void	*ft_rout_mstr(void *arg);
 
 //  UTILS.C
 void	ft_write_think(t_thrd *arg);
 void	ft_write_eat(t_thrd *arg);
 void	ft_write_sleep(t_thrd *arg);
 void	ft_write_fork(t_thrd *arg);
+void	ft_write_death(t_thrd *arg);
 void	ft_write_ts(t_thrd *thrd);
 useconds_t	ft_conv_ms(int ms);
 int		ft_check_args(int argc, char **argv);

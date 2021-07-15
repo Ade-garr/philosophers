@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:59:07 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/15 04:54:13 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/15 17:44:14 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,17 @@ void	ft_write_fork(t_thrd *arg)
 	write(1, " has taken a fork\n", 18);
 	pthread_mutex_unlock(arg->syscl);
 }
+
+void	ft_write_death(t_thrd *arg)
+{
+	pthread_mutex_lock(arg->syscl);
+	ft_write_ts(arg);
+	write(1, " philo ", 7);
+	ft_putnbr_fd(arg->id, 1);
+	write(1, " died\n", 6);
+	pthread_mutex_unlock(arg->syscl);
+}
+
 
 void	ft_write_ts(t_thrd *thrd)
 {

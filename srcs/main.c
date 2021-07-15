@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:11:02 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/15 04:44:14 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/15 17:49:07 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ void	param_thrd(t_philo *philo)
 		philo->tab_thrd[i].ttd = philo->ttd;
 		philo->tab_thrd[i].tte = philo->tte;
 		philo->tab_thrd[i].tts = philo->tts;
+		philo->tab_thrd[i].nb_tme = philo->nb_tme;
 		philo->tab_thrd[i].setup = &philo->setup;
-		philo->tab_thrd[i].death = &philo->death;
+		philo->tab_thrd[i].end = &philo->end;
 		philo->tab_thrd[i].init = &philo->init;
 		philo->tab_thrd[i].tab_mtx = philo->tab_mtx;
 		philo->tab_thrd[i].syscl = &philo->syscl;
@@ -51,19 +52,19 @@ int	init_threads(t_philo *philo)
 		}
 		i++;
 	}
-	// i = 0;
-	// while (i < philo->nb_phl)
-	// {
-	// 	ret = pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, &philo->tab_thrd[i]); // a voir si modif arg
-	// 	if (ret != 0)
-	// 	{
-	// 		write(1, "Error : pthread_create failed\n", 30);
-	// 		philo->setup = 2;
-	// 		free_struct(philo);
-	// 		return (1);
-	// 	}
-	// 	i++;
-	// }
+	i = 0;
+	while (i < philo->nb_phl)
+	{
+		ret = pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, &philo->tab_thrd[i]); // a voir si modif arg
+		if (ret != 0)
+		{
+			write(1, "Error : pthread_create failed\n", 30);
+			philo->setup = 2;
+			free_struct(philo);
+			return (1);
+		}
+		i++;
+	}
 	return (0);
 }
 
@@ -85,20 +86,20 @@ void	free_struct(t_philo *philo)
 		}
 		free(philo->tab_phl);
 	}
-	// if (philo->tab_mstr != NULL)
-	// {
-	// 	i = 0;
-	// 	while (i < philo->nb_phl)
-	// 	{
-	// 		if (philo->tab_mstr[i] != NULL)
-	// 		{
-	// 			pthread_join(philo->tab_mstr[i], NULL);
-	// 			pthread_detach(philo->tab_mstr[i]);
-	// 		}
-	// 		i++;
-	// 	}
-	// 	free(philo->tab_mstr);
-	// }
+	if (philo->tab_mstr != NULL)
+	{
+		i = 0;
+		while (i < philo->nb_phl)
+		{
+			if (philo->tab_mstr[i] != 0)
+			{
+				pthread_join(philo->tab_mstr[i], NULL);
+				pthread_detach(philo->tab_mstr[i]);
+			}
+			i++;
+		}
+		free(philo->tab_mstr);
+	}
 	if (philo->tab_mtx != NULL)
 	{
 		i = 0;
@@ -111,7 +112,16 @@ void	free_struct(t_philo *philo)
 	}
 	pthread_mutex_destroy(&philo->syscl);
 	if (philo->tab_thrd != NULL)
+	{
+		i = 0;
+		while (i < philo->nb_phl)
+		{
+			free(philo->tab_thrd[i].is_eating);
+			free(philo->tab_thrd[i].last);
+			i++;
+		}
 		free(philo->tab_thrd);
+	}
 	free(philo);
 }
 
@@ -170,6 +180,30 @@ t_philo	*init_philo(int argc, char **argv)
 	i = 0;
 	while (i < philo->nb_phl)
 	{
+		philo->tab_thrd[i].is_eating = ft_calloc(1, sizeof(int));
+		if (philo->tab_thrd[i].is_eating == NULL)
+		{
+			write(1, "Error : malloc failed\n", 22);
+			free_struct(philo);
+			return (NULL);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < philo->nb_phl)
+	{
+		philo->tab_thrd[i].last = ft_calloc(1, sizeof(struct timeval));
+		if (philo->tab_thrd[i].last == NULL)
+		{
+			write(1, "Error : malloc failed\n", 22);
+			free_struct(philo);
+			return (NULL);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < philo->nb_phl)
+	{
 		pthread_mutex_init(&philo->tab_mtx[i], NULL);
 		i++;
 	}
@@ -191,6 +225,6 @@ int	main(int argc, char **argv)
 		return (1);
 	if (start_simul(philo) == 1)
 		return (1);
-	free_struct(philo); // a faire
+	free_struct(philo);
 	return (0);
 }
