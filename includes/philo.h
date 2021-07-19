@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:16:08 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/15 17:48:20 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/19 17:00:30 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct	s_thrd
 	int	nb_tme;
 	int	*setup;
 	int	*end;
-	int	*is_eating;
 	struct timeval	*init;
 	struct timeval	current;
 	pthread_mutex_t	*tab_mtx;
@@ -80,7 +79,7 @@ int		start_simul(t_philo *philo);
 void	*ft_rout_phl(void *arg);
 
 //  THRD_MSTR.C
-unsigned int	ft_dif_timeval(struct timeval current, struct timeval last);
+float	ft_dif_timeval(struct timeval current, struct timeval last);
 void	*ft_rout_mstr(void *arg);
 
 //  UTILS.C
@@ -92,6 +91,7 @@ void	ft_write_death(t_thrd *arg);
 void	ft_write_ts(t_thrd *thrd);
 useconds_t	ft_conv_ms(int ms);
 int		ft_check_args(int argc, char **argv);
+void	ft_usleep(useconds_t time);
 int		ft_check_num(int argc, char **argv);
 
 #endif

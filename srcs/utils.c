@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:59:07 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/15 17:44:14 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/19 17:03:58 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_write_think(t_thrd *arg)
 {
+	gettimeofday(&arg->current, NULL);
 	pthread_mutex_lock(arg->syscl);
 	ft_write_ts(arg);
 	write(1, " philo ", 7);
@@ -24,6 +25,7 @@ void	ft_write_think(t_thrd *arg)
 
 void	ft_write_eat(t_thrd *arg)
 {
+	arg->current = *arg->last;
 	pthread_mutex_lock(arg->syscl);
 	ft_write_ts(arg);
 	write(1, " philo ", 7);
@@ -34,6 +36,7 @@ void	ft_write_eat(t_thrd *arg)
 
 void	ft_write_sleep(t_thrd *arg)
 {
+	gettimeofday(&arg->current, NULL);
 	pthread_mutex_lock(arg->syscl);
 	ft_write_ts(arg);
 	write(1, " philo ", 7);
@@ -44,6 +47,7 @@ void	ft_write_sleep(t_thrd *arg)
 
 void	ft_write_fork(t_thrd *arg)
 {
+	gettimeofday(&arg->current, NULL);
 	pthread_mutex_lock(arg->syscl);
 	ft_write_ts(arg);
 	write(1, " philo ", 7);
@@ -62,13 +66,11 @@ void	ft_write_death(t_thrd *arg)
 	pthread_mutex_unlock(arg->syscl);
 }
 
-
 void	ft_write_ts(t_thrd *thrd)
 {
 	unsigned int	ts;
 
-	gettimeofday(&thrd->current, NULL);
-	ts = (thrd->current.tv_sec - thrd->init->tv_sec) * 1000 + (thrd->current.tv_usec - thrd->init->tv_usec) / 1000;
+	ts = (thrd->current.tv_sec * 1000 + thrd->current.tv_usec / 1000) - (thrd->init->tv_sec * 1000 + thrd->init->tv_usec / 1000);
 	write(1, "[", 1);
 	ft_putnbr_fd(ts, 1);
 	write(1, " ms]", 4);
@@ -100,6 +102,18 @@ int	ft_check_args(int argc, char **argv)
 		return (1);
 	}
 	return (0);
+}
+
+void	ft_usleep(useconds_t time)
+{
+	useconds_t	start;
+
+	start = 0;
+	while (start < time)
+	{
+		usleep(400);
+		start = start + 400;
+	}
 }
 
 int	ft_check_num(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:11:02 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/15 17:49:07 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/19 15:00:07 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ void	free_struct(t_philo *philo)
 		i = 0;
 		while (i < philo->nb_phl)
 		{
-			free(philo->tab_thrd[i].is_eating);
 			free(philo->tab_thrd[i].last);
 			i++;
 		}
@@ -176,18 +175,6 @@ t_philo	*init_philo(int argc, char **argv)
 		write(1, "Error : malloc failed\n", 22);
 		free_struct(philo);
 		return (NULL);
-	}
-	i = 0;
-	while (i < philo->nb_phl)
-	{
-		philo->tab_thrd[i].is_eating = ft_calloc(1, sizeof(int));
-		if (philo->tab_thrd[i].is_eating == NULL)
-		{
-			write(1, "Error : malloc failed\n", 22);
-			free_struct(philo);
-			return (NULL);
-		}
-		i++;
 	}
 	i = 0;
 	while (i < philo->nb_phl)
