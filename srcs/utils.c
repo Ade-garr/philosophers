@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:59:07 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/19 17:03:58 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/19 23:29:25 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,15 +104,25 @@ int	ft_check_args(int argc, char **argv)
 	return (0);
 }
 
+unsigned long long	get_ts(struct timeval start, struct timeval now)
+{
+	unsigned long long	dif;
+
+	dif = (now.tv_sec - start.tv_sec) * 1000000 + (now.tv_usec - start.tv_usec);
+	return (dif);
+}
+
 void	ft_usleep(useconds_t time)
 {
-	useconds_t	start;
+	struct timeval	start;
+	struct timeval	now;
 
-	start = 0;
-	while (start < time)
+	gettimeofday(&start, NULL);
+	now = start;
+	while (get_ts(start, now) < time)
 	{
-		usleep(400);
-		start = start + 400;
+		usleep(100);
+		gettimeofday(&now, NULL);
 	}
 }
 

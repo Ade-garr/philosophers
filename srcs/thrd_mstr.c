@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 17:17:39 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/19 16:34:07 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/20 01:26:14 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	*ft_rout_mstr(void *arg)
 	}
 	while (1)
 	{
-		usleep(1);
+		// usleep(1);
 		if (*((t_thrd *)arg)->end == 1)
 			return NULL;
 		gettimeofday(&((t_thrd *)arg)->current, NULL);

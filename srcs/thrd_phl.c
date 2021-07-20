@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 18:44:30 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/19 17:00:03 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/20 01:47:01 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,8 @@ void	*ft_rout_phl(void *arg)
 		if (*((t_thrd *)arg)->setup == 2)
 			return NULL;
 	}
-	while (1)
+	while (*((t_thrd *)arg)->end == 1 || (count != 0 && count == ((t_thrd *)arg)->nb_tme))
 	{
-		if (*((t_thrd *)arg)->end == 1 || (count != 0 && count == ((t_thrd *)arg)->nb_tme))
-		{
-			*((t_thrd *)arg)->end = 1;
-			return NULL;
-		}
 		ft_write_think((t_thrd *)arg);
 		if (((t_thrd *)arg)->id == ((t_thrd *)arg)->nb_phl)
 		{
@@ -62,4 +57,6 @@ void	*ft_rout_phl(void *arg)
 		ft_write_sleep((t_thrd *)arg);
 		ft_usleep(ft_conv_ms(((t_thrd *)arg)->tts));
 	}
+	*((t_thrd *)arg)->end = 1;
+	return NULL;
 }
