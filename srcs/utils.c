@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:59:07 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/19 23:29:25 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/20 23:53:56 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	ft_write_think(t_thrd *arg)
 {
-	gettimeofday(&arg->current, NULL);
 	pthread_mutex_lock(arg->syscl);
 	ft_write_ts(arg);
 	write(1, " philo ", 7);
@@ -70,7 +69,7 @@ void	ft_write_ts(t_thrd *thrd)
 {
 	unsigned int	ts;
 
-	ts = (thrd->current.tv_sec * 1000 + thrd->current.tv_usec / 1000) - (thrd->init->tv_sec * 1000 + thrd->init->tv_usec / 1000);
+	ts = (thrd->current.tv_sec - thrd->init->tv_sec) * 1000 + (thrd->current.tv_usec - thrd->init->tv_usec) / 1000;
 	write(1, "[", 1);
 	ft_putnbr_fd(ts, 1);
 	write(1, " ms]", 4);
