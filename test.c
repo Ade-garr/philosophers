@@ -85,25 +85,30 @@
 /////	STRUCTS
 ///////////////////////////////////////////////////////////////////////////
 
-typedef struct s_test
+// typedef struct s_test
+// {
+// 	int	a;
+// }				t_test;
+
+void	ft_test(struct timeval mdr)
 {
-	int	a;
-}				t_test;
+	mdr.tv_usec = 88;
+}
 
 int	main()
 {
-	t_test	first;
-	pthread_mutex_t	syscl;
-	int	ret;
-	// t_test	bis;
+	struct timeval	lol;
+	struct timeval mdr;
+	pthread_t test;
 
-	// first = NULL;
-	ret = pthread_mutex_destroy(&syscl);
-	printf("ret = %d\n", ret);
-	// first.a = 1;
-	// bis = first;
-	// first.a = 2;
-	// printf("first = %d\n", first.a);
-	// printf("bis = %d\n", bis.a);
+	gettimeofday(&lol, NULL);
+	printf("lol.sec = %ld\n", lol.tv_sec);
+	printf("lol.usec = %ld\n", lol.tv_usec);
+	pthread_create(&test, NULL, ft_test, &mdr); // a voir si modif arg
+
+	mdr = lol;
+	ft_test(mdr);
+	printf("mdr.sec = %ld\n", mdr.tv_sec);
+	printf("mdr.sec = %ld\n", mdr.tv_usec);
 	return (0);
 }

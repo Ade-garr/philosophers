@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:11:02 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/21 00:18:03 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/21 20:35:35 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ int	init_threads(t_philo *philo)
 	i = 0;
 	while (i < philo->nb_phl)
 	{
-		ret = pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, &philo->tab_thrd[i]); // a voir si modif arg
+		if (i == philo->nb_phl - 1)
+			ret = pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl_last, &philo->tab_thrd[i]); // a voir si modif arg
+		else	
+			ret = pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, &philo->tab_thrd[i]); // a voir si modif arg
 		if (ret != 0)
 		{
 			write(1, "Error : pthread_create failed\n", 30);
