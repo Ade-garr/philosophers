@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 17:17:39 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/21 13:55:20 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/21 22:03:59 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ float	ft_dif_timeval(struct timeval current, struct timeval last)
 {
 	float	dif;
 
-	dif = (current.tv_sec - last.tv_sec) * 1000 + (current.tv_usec - last.tv_usec) / 1000;
+	dif = (current.tv_sec * 1000 + current.tv_usec / 1000) - (last.tv_sec * 1000 + last.tv_usec / 1000);
+	// dif = (current.tv_sec - last.tv_sec) * 1000 + (current.tv_usec - last.tv_usec) / 1000;
 	return (dif);
 }
 
@@ -24,11 +25,6 @@ void	*ft_rout_mstr(void *arg)
 {
 	struct timeval	last;
 
-	while (*((t_thrd *)arg)->setup != 1)
-	{
-		if (*((t_thrd *)arg)->setup == 2)
-			return NULL;
-	}
 	while (1)
 	{
 		if (*((t_thrd *)arg)->end == 1)

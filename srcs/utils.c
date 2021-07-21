@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:59:07 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/21 21:31:17 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/21 21:55:45 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,21 +111,13 @@ int	ft_check_args(int argc, char **argv)
 	return (0);
 }
 
-unsigned long long	get_ts(struct timeval start, struct timeval now)
-{
-	unsigned long long	dif;
-
-	dif = (now.tv_sec - start.tv_sec) * 1000000 + (now.tv_usec - start.tv_usec);
-	return (dif);
-}
-
 void	ft_usleep(struct timeval *current, int time)
 {
 	struct timeval	start;
 	unsigned long int	dif;
 
 	start = *current;
-	dif = (current->tv_sec - start.tv_sec) * 1000 + (current->tv_usec - start.tv_usec) / 1000;
+	dif = (current->tv_sec * 1000 + current->tv_usec / 1000) - (start.tv_sec * 1000 + start.tv_usec / 1000);
 	while (dif < (unsigned int)time)
 	{
 		usleep(100);

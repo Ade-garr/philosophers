@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:16:08 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/21 21:17:29 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/21 21:51:22 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct	s_thrd
 	int	tte;
 	int	tts;
 	int	nb_tme;
-	int	*setup;
 	int	*end;
 	struct timeval	*init;
 	struct timeval	current;
@@ -50,7 +49,6 @@ typedef struct s_philo
 	pthread_mutex_t	syscl;
 	t_thrd	*tab_thrd;
 	struct timeval	init;
-	int	setup;
 	int	end;
 }	t_philo;
 
@@ -68,13 +66,10 @@ void	ft_putnbr_fd(int n, int fd);
 
 //  MAIN.C
 void	param_thrd(t_philo *philo);
-int		init_threads(t_philo *philo);
+void		init_threads(t_philo *philo);
 void	free_struct(t_philo *philo);
 t_philo	*init_philo(int argc, char **argv);
 int		main(int argc, char **argv);
-
-//  START.C
-int		start_simul(t_philo *philo);
 
 //  THRD_PHL.C
 void	*ft_rout_phl_last(void *arg);

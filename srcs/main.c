@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:11:02 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/21 20:35:35 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/21 21:51:33 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	param_thrd(t_philo *philo)
 		philo->tab_thrd[i].tte = philo->tte;
 		philo->tab_thrd[i].tts = philo->tts;
 		philo->tab_thrd[i].nb_tme = philo->nb_tme;
-		philo->tab_thrd[i].setup = &philo->setup;
 		philo->tab_thrd[i].end = &philo->end;
 		philo->tab_thrd[i].init = &philo->init;
 		philo->tab_thrd[i].tab_mtx = philo->tab_mtx;
@@ -34,41 +33,23 @@ void	param_thrd(t_philo *philo)
 	}
 }
 
-int	init_threads(t_philo *philo)
+void	init_threads(t_philo *philo)
 {
 	int	i;
-	int	ret;
 
+	write(1, "Simulation start !\n", 19);
+	gettimeofday(&philo->init, NULL);
 	i = 0;
 	while (i < philo->nb_phl)
 	{
+		*philo->tab_thrd[i].last = philo->init;
 		if (i == philo->nb_phl - 1)
-			ret = pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl_last, &philo->tab_thrd[i]); // a voir si modif arg
+			pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl_last, &philo->tab_thrd[i]); // a voir si modif arg
 		else	
-			ret = pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, &philo->tab_thrd[i]); // a voir si modif arg
-		if (ret != 0)
-		{
-			write(1, "Error : pthread_create failed\n", 30);
-			philo->setup = 2;
-			free_struct(philo);
-			return (1);
-		}
+			pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, &philo->tab_thrd[i]); // a voir si modif arg
+		pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, &philo->tab_thrd[i]); // a voir si modif arg
 		i++;
 	}
-	i = 0;
-	while (i < philo->nb_phl)
-	{
-		ret = pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, &philo->tab_thrd[i]); // a voir si modif arg
-		if (ret != 0)
-		{
-			write(1, "Error : pthread_create failed\n", 30);
-			philo->setup = 2;
-			free_struct(philo);
-			return (1);
-		}
-		i++;
-	}
-	return (0);
 }
 
 void	free_struct(t_philo *philo)
@@ -211,10 +192,7 @@ int	main(int argc, char **argv)
 	philo = init_philo(argc, argv);
 	if (philo == NULL)
 		return (1);
-	if (init_threads(philo) == 1)
-		return (1);
-	if (start_simul(philo) == 1)
-		return (1);
+	init_threads(philo);
 	free_struct(philo);
 	return (0);
 }
