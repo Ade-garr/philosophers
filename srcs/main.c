@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:11:02 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/23 02:30:18 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/23 03:23:33 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,10 @@ void	init_threads(t_philo *philo)
 				pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl_last, &philo->tab_thrd[i]); // a voir si modif arg
 			else	
 				pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, &philo->tab_thrd[i]); // a voir si modif arg
-			// pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, &philo->tab_thrd[i]); // a voir si modif arg
 		}
 		i++;
 	}
-	pthread_create(&philo->tab_mstr1, NULL, ft_rout_mstr, &philo->tab_thrd); // a voir si modif arg
+	pthread_create(&philo->tab_mstr1, NULL, ft_rout_mstr_i, philo->tab_thrd); // a voir si modif arg
 	usleep(1000);
 	i = 0;
 	while (i < philo->nb_phl)
@@ -64,11 +63,10 @@ void	init_threads(t_philo *philo)
 				pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl_last, &philo->tab_thrd[i]); // a voir si modif arg
 			else	
 				pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, &philo->tab_thrd[i]); // a voir si modif arg
-			// pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, &philo->tab_thrd[i]); // a voir si modif arg
 		}
 		i++;
 	}
-	pthread_create(&philo->tab_mstr2, NULL, ft_rout_mstr, &philo->tab_thrd); // a voir si modif arg
+	pthread_create(&philo->tab_mstr2, NULL, ft_rout_mstr_p, philo->tab_thrd); // a voir si modif arg
 }
 
 void	free_struct(t_philo *philo)
@@ -89,19 +87,15 @@ void	free_struct(t_philo *philo)
 		}
 		free(philo->tab_phl);
 	}
-	if (philo->tab_mstr != NULL)
+	if (philo->tab_mstr1 != 0)
 	{
-		i = 0;
-		while (i < philo->nb_phl)
-		{
-			if (philo->tab_mstr[i] != 0)
-			{
-				pthread_join(philo->tab_mstr[i], NULL);
-				pthread_detach(philo->tab_mstr[i]);
-			}
-			i++;
-		}
-		free(philo->tab_mstr);
+		pthread_join(philo->tab_mstr1, NULL);
+		pthread_detach(philo->tab_mstr1);
+	}
+	if (philo->tab_mstr2 != 0)
+	{
+		pthread_join(philo->tab_mstr2, NULL);
+		pthread_detach(philo->tab_mstr2);
 	}
 	if (philo->tab_mtx != NULL)
 	{
@@ -152,13 +146,6 @@ t_philo	*init_philo(int argc, char **argv)
 	}
 	philo->tab_phl = (pthread_t *)ft_calloc(philo->nb_phl, sizeof(pthread_t));
 	if (philo->tab_phl == NULL)
-	{
-		write(1, "Error : malloc failed\n", 22);
-		free_struct(philo);
-		return (NULL);
-	}
-	philo->tab_mstr = (pthread_t *)ft_calloc(philo->nb_phl, sizeof(pthread_t));
-	if (philo->tab_mstr == NULL)
 	{
 		write(1, "Error : malloc failed\n", 22);
 		free_struct(philo);

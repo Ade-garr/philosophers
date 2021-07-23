@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:16:08 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/22 19:53:45 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/23 04:02:31 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ typedef struct s_philo
 	int	tts;
 	int	nb_tme;
 	pthread_t	*tab_phl;
-	pthread_t	*tab_mstr;
+	pthread_t	tab_mstr1;
+	pthread_t	tab_mstr2;
 	pthread_mutex_t	*tab_mtx;
 	t_thrd	*tab_thrd;
 	struct timeval	init;
@@ -74,8 +75,9 @@ void	*ft_rout_phl_last(void *arg);
 void	*ft_rout_phl(void *arg);
 
 //  THRD_MSTR.C
-float	ft_dif_timeval(struct timeval current, struct timeval last);
-void	*ft_rout_mstr(void *arg);
+unsigned long int	ft_dif_timeval(struct timeval current, struct timeval last);
+void	*ft_rout_mstr_i(void *arg);
+void	*ft_rout_mstr_p(void *arg);
 
 //  UTILS.C
 void	ft_write_think(t_thrd *arg);

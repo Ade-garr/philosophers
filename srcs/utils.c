@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:59:07 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/23 02:13:50 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/23 04:06:00 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	ft_write_think(t_thrd *arg)
 	ret = ft_write_ts(arg, log);
 	ret = ft_add_int_to_s(log, ret, arg->id);
 	ret = ft_add_s_to_s(log, ret, " is thinking\n");
-	write(1, &log, ret);
+	if (*arg->end == 0)
+		write(1, &log, ret);
 }
 
 void	ft_write_eat(t_thrd *arg)
@@ -31,7 +32,8 @@ void	ft_write_eat(t_thrd *arg)
 	ret = ft_write_ts(arg, log);
 	ret = ft_add_int_to_s(log, ret, arg->id);
 	ret = ft_add_s_to_s(log, ret, " is eating\n");
-	write(1, &log, ret);
+	if (*arg->end == 0)
+		write(1, &log, ret);
 }
 
 void	ft_write_sleep(t_thrd *arg)
@@ -42,7 +44,8 @@ void	ft_write_sleep(t_thrd *arg)
 	ret = ft_write_ts(arg, log);
 	ret = ft_add_int_to_s(log, ret, arg->id);
 	ret = ft_add_s_to_s(log, ret, " is sleeping\n");
-	write(1, &log, ret);
+	if (*arg->end == 0)
+		write(1, &log, ret);
 }
 
 void	ft_write_fork(t_thrd *arg)
@@ -54,7 +57,8 @@ void	ft_write_fork(t_thrd *arg)
 	ret = ft_write_ts(arg, log);
 	ret = ft_add_int_to_s(log, ret, arg->id);
 	ret = ft_add_s_to_s(log, ret, " has taken a fork\n");
-	write(1, &log, ret);
+	if (*arg->end == 0)
+		write(1, &log, ret);
 }
 
 void	ft_write_death(t_thrd *arg)
@@ -64,7 +68,7 @@ void	ft_write_death(t_thrd *arg)
 
 	ret = ft_write_ts_death(arg, log);
 	ret = ft_add_int_to_s(log, ret, arg->id);
-	ret = ft_add_s_to_s(log, ret, " has taken a fork\n");
+	ret = ft_add_s_to_s(log, ret, " died\n");
 	write(1, &log, ret);
 }
 
@@ -162,7 +166,7 @@ void	ft_usleep(struct timeval *current, int time)
 	{
 		usleep(100);
 		gettimeofday(current, NULL);
-		dif = (current->tv_sec - start.tv_sec) * 1000 + (current->tv_usec - start.tv_usec) / 1000;
+		dif = (current->tv_sec * 1000 + current->tv_usec / 1000) - (start.tv_sec * 1000 + start.tv_usec / 1000);
 	}
 }
 
