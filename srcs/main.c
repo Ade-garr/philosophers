@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:11:02 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/21 21:51:33 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/23 02:30:18 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	param_thrd(t_philo *philo)
 		philo->tab_thrd[i].end = &philo->end;
 		philo->tab_thrd[i].init = &philo->init;
 		philo->tab_thrd[i].tab_mtx = philo->tab_mtx;
-		philo->tab_thrd[i].syscl = &philo->syscl;
 		i++;
 	}
 }
@@ -42,14 +41,34 @@ void	init_threads(t_philo *philo)
 	i = 0;
 	while (i < philo->nb_phl)
 	{
-		*philo->tab_thrd[i].last = philo->init;
-		if (i == philo->nb_phl - 1)
-			pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl_last, &philo->tab_thrd[i]); // a voir si modif arg
-		else	
-			pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, &philo->tab_thrd[i]); // a voir si modif arg
-		pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, &philo->tab_thrd[i]); // a voir si modif arg
+		if ((i + 1) % 2 == 1)
+		{
+			*philo->tab_thrd[i].last = philo->init;
+			if (i == philo->nb_phl - 1)
+				pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl_last, &philo->tab_thrd[i]); // a voir si modif arg
+			else	
+				pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, &philo->tab_thrd[i]); // a voir si modif arg
+			// pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, &philo->tab_thrd[i]); // a voir si modif arg
+		}
 		i++;
 	}
+	pthread_create(&philo->tab_mstr1, NULL, ft_rout_mstr, &philo->tab_thrd); // a voir si modif arg
+	usleep(1000);
+	i = 0;
+	while (i < philo->nb_phl)
+	{
+		if ((i + 1) % 2 == 0)
+		{
+			*philo->tab_thrd[i].last = philo->init;
+			if (i == philo->nb_phl - 1)
+				pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl_last, &philo->tab_thrd[i]); // a voir si modif arg
+			else	
+				pthread_create(&philo->tab_phl[i], NULL, ft_rout_phl, &philo->tab_thrd[i]); // a voir si modif arg
+			// pthread_create(&philo->tab_mstr[i], NULL, ft_rout_mstr, &philo->tab_thrd[i]); // a voir si modif arg
+		}
+		i++;
+	}
+	pthread_create(&philo->tab_mstr2, NULL, ft_rout_mstr, &philo->tab_thrd); // a voir si modif arg
 }
 
 void	free_struct(t_philo *philo)
@@ -94,7 +113,6 @@ void	free_struct(t_philo *philo)
 		}
 		free(philo->tab_mtx);
 	}
-	pthread_mutex_destroy(&philo->syscl);
 	if (philo->tab_thrd != NULL)
 	{
 		i = 0;
@@ -178,7 +196,6 @@ t_philo	*init_philo(int argc, char **argv)
 		pthread_mutex_init(&philo->tab_mtx[i], NULL);
 		i++;
 	}
-	pthread_mutex_init(&philo->syscl, NULL);
 	param_thrd(philo);
 	return (philo);
 }

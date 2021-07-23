@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:16:08 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/21 21:51:22 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/22 19:53:45 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ typedef struct	s_thrd
 	struct timeval	current;
 	struct timeval	current_mstr;
 	pthread_mutex_t	*tab_mtx;
-	pthread_mutex_t	*syscl;
 	struct timeval	*last;
 }				t_thrd;
 
@@ -46,7 +45,6 @@ typedef struct s_philo
 	pthread_t	*tab_phl;
 	pthread_t	*tab_mstr;
 	pthread_mutex_t	*tab_mtx;
-	pthread_mutex_t	syscl;
 	t_thrd	*tab_thrd;
 	struct timeval	init;
 	int	end;
@@ -85,8 +83,10 @@ void	ft_write_eat(t_thrd *arg);
 void	ft_write_sleep(t_thrd *arg);
 void	ft_write_fork(t_thrd *arg);
 void	ft_write_death(t_thrd *arg);
-void	ft_write_ts_death(t_thrd *thrd);
-void	ft_write_ts(t_thrd *thrd);
+int	ft_write_ts_death(t_thrd *thrd, char *log);
+int		ft_add_s_to_s(char *log, int ret, char *s);
+int		ft_add_int_to_s(char *log, int ret, unsigned long int ts);
+int		ft_write_ts(t_thrd *thrd, char *log);
 int		ft_check_args(int argc, char **argv);
 void	ft_usleep(struct timeval *current, int time);
 int		ft_check_num(int argc, char **argv);
