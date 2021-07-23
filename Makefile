@@ -6,18 +6,20 @@
 #    By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/12 10:29:31 by user42            #+#    #+#              #
-#    Updated: 2021/07/21 21:48:52 by ade-garr         ###   ########.fr        #
+#    Updated: 2021/07/23 19:33:01 by ade-garr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS += ./srcs/ft_atoi.c
 SRCS += ./srcs/ft_calloc.c
 SRCS += ./srcs/ft_isdigit.c
-SRCS += ./srcs/ft_putnbr_fd.c
+SRCS += ./srcs/init.c
 SRCS += ./srcs/main.c
 SRCS += ./srcs/thrd_mstr.c
 SRCS += ./srcs/thrd_phl.c
 SRCS += ./srcs/utils.c
+SRCS += ./srcs/utils2.c
+SRCS += ./srcs/utils3.c
 
 OBJS	= ${SRCS:.c=.o}
 

@@ -6,133 +6,65 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:59:07 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/23 04:06:00 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/07/23 19:38:44 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_write_think(t_thrd *arg)
-{
-	char log[100];
-	int	ret;
-
-	ret = ft_write_ts(arg, log);
-	ret = ft_add_int_to_s(log, ret, arg->id);
-	ret = ft_add_s_to_s(log, ret, " is thinking\n");
-	if (*arg->end == 0)
-		write(1, &log, ret);
-}
-
-void	ft_write_eat(t_thrd *arg)
-{
-	char log[100];
-	int	ret;
-
-	ret = ft_write_ts(arg, log);
-	ret = ft_add_int_to_s(log, ret, arg->id);
-	ret = ft_add_s_to_s(log, ret, " is eating\n");
-	if (*arg->end == 0)
-		write(1, &log, ret);
-}
-
-void	ft_write_sleep(t_thrd *arg)
-{
-	char log[100];
-	int	ret;
-
-	ret = ft_write_ts(arg, log);
-	ret = ft_add_int_to_s(log, ret, arg->id);
-	ret = ft_add_s_to_s(log, ret, " is sleeping\n");
-	if (*arg->end == 0)
-		write(1, &log, ret);
-}
-
-void	ft_write_fork(t_thrd *arg)
-{
-	char log[100];
-	int	ret;
-
-	gettimeofday(&arg->current, NULL);
-	ret = ft_write_ts(arg, log);
-	ret = ft_add_int_to_s(log, ret, arg->id);
-	ret = ft_add_s_to_s(log, ret, " has taken a fork\n");
-	if (*arg->end == 0)
-		write(1, &log, ret);
-}
-
-void	ft_write_death(t_thrd *arg)
-{
-	char log[100];
-	int	ret;
-
-	ret = ft_write_ts_death(arg, log);
-	ret = ft_add_int_to_s(log, ret, arg->id);
-	ret = ft_add_s_to_s(log, ret, " died\n");
-	write(1, &log, ret);
-}
-
-int	ft_write_ts_death(t_thrd *thrd, char *log)
-{
-	unsigned long int	ts;
-	int	ret;
-
-	ts = (thrd->current_mstr.tv_sec * 1000 + thrd->current_mstr.tv_usec / 1000) - (thrd->init->tv_sec * 1000 + thrd->init->tv_usec / 1000);
-	log[0] = '[';
-	ret = ft_add_int_to_s(log, 1, ts);
-	ret = ft_add_s_to_s(log, ret, " ms] ");
-	return (ret);
-}
-
-int	ft_add_s_to_s(char *log, int ret, char *s)
+void	free_struct2(t_philo *philo)
 {
 	int	i;
 
-	i = 0;
-	while (s[i] != '\0')
+	if (philo->tab_mstr2 != 0)
 	{
-		log[ret] = s[i];
-		ret++;
-		i++;
+		pthread_join(philo->tab_mstr2, NULL);
+		pthread_detach(philo->tab_mstr2);
 	}
-	return (ret);
+	if (philo->tab_mtx != NULL)
+	{
+		i = -1;
+		while (++i < philo->nb_phl)
+			pthread_mutex_destroy(&philo->tab_mtx[i]);
+		free(philo->tab_mtx);
+	}
+	if (philo->tab_thrd != NULL)
+	{
+		i = 0;
+		while (i < philo->nb_phl)
+		{
+			free(philo->tab_thrd[i].last);
+			i++;
+		}
+		free(philo->tab_thrd);
+	}
+	free(philo);
 }
 
-int	ft_add_int_to_s(char *log, int ret, unsigned long int ts)
+void	free_struct(t_philo *philo)
 {
-	unsigned long int tmp;
-	int	count;
-	int	ret_bis;
+	int	i;
 
-	count = 1;
-	tmp = ts;
-	while (tmp >= 10)
+	if (philo->tab_phl != NULL)
 	{
-		tmp = tmp / 10;
-		count++;
+		i = 0;
+		while (i < philo->nb_phl)
+		{
+			if (philo->tab_phl[i] != 0)
+			{
+				pthread_join(philo->tab_phl[i], NULL);
+				pthread_detach(philo->tab_phl[i]);
+			}
+			i++;
+		}
+		free(philo->tab_phl);
 	}
-	ret_bis = ret + count;
-	if (ts == 0)
-		log[ret + count - 1] = '0';
-	while (ts > 0)
+	if (philo->tab_mstr1 != 0)
 	{
-		log[ret + count - 1] = ts % 10 + 48;
-		ts = ts / 10;
-		count--;
+		pthread_join(philo->tab_mstr1, NULL);
+		pthread_detach(philo->tab_mstr1);
 	}
-	return (ret_bis);
-}
-
-int	ft_write_ts(t_thrd *thrd, char *log)
-{
-	unsigned long int	ts;
-	int	ret;
-
-	ts = (thrd->current.tv_sec * 1000 + thrd->current.tv_usec / 1000) - (thrd->init->tv_sec * 1000 + thrd->init->tv_usec / 1000);
-	log[0] = '[';
-	ret = ft_add_int_to_s(log, 1, ts);
-	ret = ft_add_s_to_s(log, ret, " ms] ");
-	return (ret);
+	free_struct2(philo);
 }
 
 int	ft_check_args(int argc, char **argv)
@@ -157,16 +89,18 @@ int	ft_check_args(int argc, char **argv)
 
 void	ft_usleep(struct timeval *current, int time)
 {
-	struct timeval	start;
+	struct timeval		start;
 	unsigned long int	dif;
 
 	start = *current;
-	dif = (current->tv_sec * 1000 + current->tv_usec / 1000) - (start.tv_sec * 1000 + start.tv_usec / 1000);
+	dif = (current->tv_sec * 1000 + current->tv_usec / 1000) - \
+	(start.tv_sec * 1000 + start.tv_usec / 1000);
 	while (dif < (unsigned int)time)
 	{
 		usleep(100);
 		gettimeofday(current, NULL);
-		dif = (current->tv_sec * 1000 + current->tv_usec / 1000) - (start.tv_sec * 1000 + start.tv_usec / 1000);
+		dif = (current->tv_sec * 1000 + current->tv_usec / 1000) - \
+		(start.tv_sec * 1000 + start.tv_usec / 1000);
 	}
 }
 
