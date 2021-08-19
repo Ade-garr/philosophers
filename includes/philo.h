@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:16:08 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/23 19:43:46 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/08/19 16:41:32 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <stdio.h> // a enlever
 
 typedef struct s_thrd
 {
@@ -32,6 +33,10 @@ typedef struct s_thrd
 	struct timeval	current;
 	struct timeval	current_mstr;
 	pthread_mutex_t	*tab_mtx;
+	pthread_mutex_t	*wrt;
+	pthread_mutex_t	*stop;
+	pthread_mutex_t	mtx_last;
+	pthread_mutex_t	mtx_done;
 	struct timeval	*last;
 }	t_thrd;
 
@@ -46,6 +51,8 @@ typedef struct s_philo
 	pthread_t		tab_mstr1;
 	pthread_t		tab_mstr2;
 	pthread_mutex_t	*tab_mtx;
+	pthread_mutex_t	wrt;
+	pthread_mutex_t	stop;
 	t_thrd			*tab_thrd;
 	struct timeval	init;
 	int				end;
@@ -80,9 +87,13 @@ void				*ft_rout_mstr_p(void *arg);
 
 //  THRD_PHL.C
 void				ft_rout_phl_last2(void *arg);
+void				ft_rout_phl_last2_i(void *arg);
 void				*ft_rout_phl_last(void *arg);
+void				*ft_rout_phl_last_i(void *arg);
 void				ft_rout_phl2(void *arg);
 void				*ft_rout_phl(void *arg);
+void				ft_rout_phl2_i(void *arg);
+void				*ft_rout_phl_i(void *arg);
 
 //  UTILS.C
 void				free_struct2(t_philo *philo);
@@ -103,5 +114,8 @@ int					ft_write_ts_death(t_thrd *thrd, char *log);
 int					ft_add_s_to_s(char *log, int ret, char *s);
 int					ft_add_int_to_s(char *log, int ret, unsigned long int ts);
 int					ft_write_ts(t_thrd *thrd, char *log);
+int 				ft_check_end(t_thrd *arg);
+int					ft_check_done(t_thrd *arg);
+
 
 #endif

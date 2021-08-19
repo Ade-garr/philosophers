@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:11:02 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/23 18:57:25 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/08/19 16:37:31 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,10 @@ void	param_thrd(t_philo *philo)
 		philo->tab_thrd[i].end = &philo->end;
 		philo->tab_thrd[i].init = &philo->init;
 		philo->tab_thrd[i].tab_mtx = philo->tab_mtx;
+		philo->tab_thrd[i].wrt = &philo->wrt;
+		philo->tab_thrd[i].stop = &philo->stop;
+		pthread_mutex_init(&philo->tab_thrd[i].mtx_last, NULL);
+		pthread_mutex_init(&philo->tab_thrd[i].mtx_done, NULL);
 		i++;
 	}
 }
@@ -54,6 +58,8 @@ int	init_philo3(t_philo *philo)
 		pthread_mutex_init(&philo->tab_mtx[i], NULL);
 		i++;
 	}
+	pthread_mutex_init(&philo->wrt, NULL);
+	pthread_mutex_init(&philo->stop, NULL);
 	param_thrd(philo);
 	return (0);
 }

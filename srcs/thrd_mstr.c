@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 17:17:39 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/07/23 19:36:52 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/08/19 17:21:33 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,18 @@ int	check_time(void *arg, int i)
 {
 	struct timeval	last;
 
+	pthread_mutex_lock(&((t_thrd *)arg)[i].mtx_last);
 	last = *((t_thrd *)arg)[i].last;
+	pthread_mutex_unlock(&((t_thrd *)arg)[i].mtx_last);
 	gettimeofday(&((t_thrd *)arg)[i].current_mstr, NULL);
 	if (ft_dif_timeval(((t_thrd *)arg)[i].current_mstr, last) > \
 	(unsigned long int)((t_thrd *)arg)[i].ttd)
 	{
-		if (*((t_thrd *)arg)[i].end == 0)
+		if (ft_check_end(&((t_thrd *)arg)[i]) == 0)
 		{
+			pthread_mutex_lock(((t_thrd *)arg)[i].stop);
 			*((t_thrd *)arg)[i].end = 1;
+			pthread_mutex_unlock(((t_thrd *)arg)[i].stop);
 			ft_write_death(&((t_thrd *)arg)[i]);
 		}
 		return (1);
@@ -62,9 +66,9 @@ void	*ft_rout_mstr_i(void *arg)
 		count = 0;
 		while (i < ((t_thrd *)arg)[0].nb_phl)
 		{
-			if (*((t_thrd *)arg)[i].end == 1)
+			if (ft_check_end(&((t_thrd *)arg)[i]) == 1)
 				return (NULL);
-			if (((t_thrd *)arg)[0].done == 1)
+			if (ft_check_done(&((t_thrd *)arg)[i]) == 1)
 			{
 				count++;
 				if (check_finish(arg, count) == 1)
@@ -91,12 +95,12 @@ void	*ft_rout_mstr_p(void *arg)
 		count = 0;
 		while (i < ((t_thrd *)arg)[0].nb_phl)
 		{
-			if (*((t_thrd *)arg)[i].end == 1)
+			if (ft_check_end(&((t_thrd *)arg)[i]) == 1)
 				return (NULL);
-			if (((t_thrd *)arg)[0].done == 1)
+			if (ft_check_done(&((t_thrd *)arg)[i]) == 1)
 			{
 				count++;
-				if (count == ((t_thrd *)arg)[0].nb_phl / 2)
+				if (count == ((t_thrd *)arg)[i].nb_phl / 2)
 					return (NULL);
 			}
 			else
