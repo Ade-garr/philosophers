@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:59:07 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/08/19 16:37:53 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/08/23 16:49:47 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,7 @@ void	free_struct2(t_philo *philo)
 			pthread_mutex_destroy(&philo->tab_mtx[i]);
 		free(philo->tab_mtx);
 	}
-	pthread_mutex_destroy(&philo->wrt);
-	pthread_mutex_destroy(&philo->stop);
-	if (philo->tab_thrd != NULL)
-	{
-		i = -1;
-		while (++i < philo->nb_phl)
-		{
-			pthread_mutex_destroy(&philo->tab_thrd[i].mtx_last);
-			pthread_mutex_destroy(&philo->tab_thrd[i].mtx_done);
-			free(philo->tab_thrd[i].last);
-		}
-		free(philo->tab_thrd);
-	}
-	free(philo);
+	free_struct3(philo);
 }
 
 void	free_struct(t_philo *philo)

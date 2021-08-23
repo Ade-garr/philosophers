@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 16:16:08 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/08/19 17:30:21 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/08/23 17:11:31 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,12 @@ void				*ft_rout_mstr_p(void *arg);
 
 //  THRD_PHL.C
 void				ft_rout_phl_last2(void *arg);
-void				ft_rout_phl_last2_i(void *arg);
+int					ft_rout_phl_last2_i(void *arg, int count);
 void				*ft_rout_phl_last(void *arg);
 void				*ft_rout_phl_last_i(void *arg);
 void				ft_rout_phl2(void *arg);
+
+//  THRD_PHL2.C
 void				*ft_rout_phl(void *arg);
 void				ft_rout_phl2_i(void *arg);
 void				*ft_rout_phl_i(void *arg);
@@ -113,8 +115,10 @@ int					ft_write_ts_death(t_thrd *thrd, char *log);
 int					ft_add_s_to_s(char *log, int ret, char *s);
 int					ft_add_int_to_s(char *log, int ret, unsigned long int ts);
 int					ft_write_ts(t_thrd *thrd, char *log);
-int 				ft_check_end(t_thrd *arg);
-int					ft_check_done(t_thrd *arg);
+int					ft_check_end(t_thrd *arg);
 
+//  UTILS4.C
+int					ft_check_done(t_thrd *arg);
+void				free_struct3(t_philo *philo);
 
 #endif

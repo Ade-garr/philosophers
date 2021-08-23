@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 19:31:41 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/08/19 17:01:31 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/08/23 16:47:36 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	ft_write_ts(t_thrd *thrd, char *log)
 	return (ret);
 }
 
-int ft_check_end(t_thrd *arg)
+int	ft_check_end(t_thrd *arg)
 {
 	pthread_mutex_lock(&*arg->stop);
 	if (*arg->end == 1)
@@ -86,17 +86,5 @@ int ft_check_end(t_thrd *arg)
 		return (1);
 	}
 	pthread_mutex_unlock(&*arg->stop);
-	return (0);
-}
-
-int	ft_check_done(t_thrd *arg)
-{
-	pthread_mutex_lock(&arg->mtx_done);
-	if (arg->done == 1)
-	{
-		pthread_mutex_unlock(&arg->mtx_done);
-		return (1);
-	}
-	pthread_mutex_unlock(&arg->mtx_done);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/12 10:29:31 by user42            #+#    #+#              #
-#    Updated: 2021/08/19 17:02:06 by ade-garr         ###   ########.fr        #
+#    Updated: 2021/08/23 16:47:10 by ade-garr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,11 @@ SRCS += ./srcs/init.c
 SRCS += ./srcs/main.c
 SRCS += ./srcs/thrd_mstr.c
 SRCS += ./srcs/thrd_phl.c
+SRCS += ./srcs/thrd_phl2.c
 SRCS += ./srcs/utils.c
 SRCS += ./srcs/utils2.c
 SRCS += ./srcs/utils3.c
+SRCS += ./srcs/utils4.c
 
 OBJS	= ${SRCS:.c=.o}
 
