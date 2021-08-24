@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/08 12:59:07 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/08/23 16:49:47 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/08/24 15:26:54 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	ft_usleep(struct timeval *current, int time)
 	(start.tv_sec * 1000 + start.tv_usec / 1000);
 	while (dif < (unsigned int)time)
 	{
-		usleep(100);
+		usleep(1000);
 		gettimeofday(current, NULL);
 		dif = (current->tv_sec * 1000 + current->tv_usec / 1000) - \
 		(start.tv_sec * 1000 + start.tv_usec / 1000);
