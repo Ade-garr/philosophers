@@ -6,7 +6,7 @@
 /*   By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 18:56:01 by ade-garr          #+#    #+#             */
-/*   Updated: 2021/08/19 13:46:39 by ade-garr         ###   ########.fr       */
+/*   Updated: 2021/08/24 14:44:03 by ade-garr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	init_threads2(t_philo *philo)
 			*philo->tab_thrd[i].last = philo->init;
 			if (i == philo->nb_phl - 1)
 				pthread_create(&philo->tab_phl[i], NULL, \
-				ft_rout_phl_last, &philo->tab_thrd[i]);
+				ft_rout_phl_last_i, &philo->tab_thrd[i]);
 			else
 				pthread_create(&philo->tab_phl[i], NULL, \
-				ft_rout_phl, &philo->tab_thrd[i]);
+				ft_rout_phl_i, &philo->tab_thrd[i]);
 		}
 		i++;
 	}
