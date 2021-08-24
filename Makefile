@@ -6,7 +6,7 @@
 #    By: ade-garr <ade-garr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/12 10:29:31 by user42            #+#    #+#              #
-#    Updated: 2021/08/24 15:16:41 by ade-garr         ###   ########.fr        #
+#    Updated: 2021/08/24 16:16:15 by ade-garr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ CC		= clang
 CFLAGS	+= -Wall
 CFLAGS	+= -Wextra
 CFLAGS	+= -Werror
-CFLAGS	+= -fsanitize=thread -g3
+# CFLAGS	+= -fsanitize=thread -g3
 
 HEADER = ${INCLUDES}philo.h
 
