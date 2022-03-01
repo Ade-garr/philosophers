@@ -1,8 +1,8 @@
-### Welcome to my philosophers repository 👋
+# 📌 philosophers 📌
 
-⭐️ The goal of this subject is to become familiar with threads, mutex and semaphores.
+The goal of this subject is to become familiar with threads, mutex and semaphores.
 
-## 💡 Usage
+## 🔑 How to
 
 ```
 make
